@@ -24,6 +24,13 @@ SERVICE_NAME = app-ci
 DOCKER_COMPOSE_RUN = $(DOCKER_COMPOSE_COMMAND) run --rm $(SERVICE_NAME)
 DOCKER_COMPOSE_EXEC = $(DOCKER_COMPOSE_COMMAND) exec $(SERVICE_NAME)
 
+build-for-dependencies:
+	rm -f *.lock
+	$(DOCKER_COMPOSE_COMMAND) build $(SERVICE_NAME)
+
+## Lock dependencies with poetry
+lock-dependencies: build-for-dependencies
+	$(DOCKER_COMPOSE_RUN) bash -c "if [ -e /home/$(USER_NAME)/poetry.lock.build ]; then cp /home/$(USER_NAME)/poetry.lock.build ./poetry.lock; else poetry lock; fi"
 
 up: 
 ifeq (, $(shell docker ps -a | grep $(CONTAINER_NAME)))
