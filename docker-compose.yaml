@@ -1,0 +1,44 @@
+
+volumes:
+  postgres-mlflow-data:
+  mlflow-artifact-store:
+
+services:
+  mlflow-db:
+    image: postgres:14
+    container_name: mlflow-backend-store
+    env_file:
+      - .envs/.mlflow_dev
+      - .envs/.postgres
+    volumes:
+      - postgres-mlflow-data:/var/lib/postgres/data
+    ports:
+      - 5433:5432
+    profiles:
+      - ci
+
+  app-ci:
+    user: "${USER_ID:-1000}"
+    hostname: "${HOST_NAME:-amirhossein}"
+    image: metas-model
+    container_name: metas-model-dev-container
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      args:
+        USER_NAME: "${USER_NAME:-amirhossein}" 
+        USER_ID: "${USER_ID:-1000}"
+    env_file:
+      - .envs/.mlflow_dev
+      - .envs/.postgres
+    volumes:
+      - ./:/app/
+      - mlflow-artifact-store:/mlflow-artifact-store
+      - ~/.config/gcloud/:/home/${USER_NAME:-amirhossein}/.config/gcloud
+    ports:
+      - 8888:8888
+      - ${LOCAL_DEV_MLFLOW_SERVER_PORT}:${LOCAL_DEV_MLFLOW_SERVER_PORT}
+    ipc: host
+    init: true
+    profiles:
+      - ci
