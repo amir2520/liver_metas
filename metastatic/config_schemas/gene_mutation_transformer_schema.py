@@ -5,7 +5,7 @@ from collections import Counter
 
 
 @dataclass
-class GeneMutProcessConfig:
+class PartialGeneMutProcessConfig:
 	_target_: str = 'metastatic.preprocess.gene_mutation_transformer.GeneMutProcess'
 	_partial_: bool = True
 	gene_counter: Counter = MISSING
@@ -18,6 +18,6 @@ def setup_config():
 	cs = ConfigStore.instance()
 	cs.store(
 		name='gene_mutation_precessor_schema',
-		node=GeneMutProcessConfig,
+		node=PartialGeneMutProcessConfig,
 		group='preprocessing'
 	)

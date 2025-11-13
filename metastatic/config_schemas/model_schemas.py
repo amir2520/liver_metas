@@ -29,4 +29,20 @@ class LinearSVCConfig(ModelConfig):
 	class_weight: dict = field(default_factory=lambda: {0: 1, 1: 1})
 
 
-
+def setup_config():
+	cs = ConfigStore.instance()
+	cs.store(
+		name="logistic_regression_model_schema",
+		node=LogisticRegressionConfig,
+		group="models"
+	)
+	cs.store(
+		name="random_forest_model_schema",
+		node=RandomForestClassifierConfig,
+		group="models"
+	)
+	cs.store(
+		name="linear_svc_model_schema",
+		node=LinearSVCConfig,
+		group="models"
+	)
