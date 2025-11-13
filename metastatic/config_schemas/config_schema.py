@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from omegaconf import MISSING
 from collections import Counter
 from typing import Callable, Optional
@@ -14,9 +14,20 @@ class PipelineConfig:
 	dim_reduction_layer: Optional[dimension_reduction_schemas.DimensionalityReductionConfig] = dimension_reduction_schemas.NMFConfig()
 	partial_vectorizer_layer: Optional[vectorizer_schemas.VectorizerConfig] = vectorizer_schemas.PartialTfidfVectorizerConfig()
 	partial_gene_mutation_preprocess_layer: gene_mutation_transformer_schema.PartialGeneMutProcessConfig = gene_mutation_transformer_schema.PartialGeneMutProcessConfig()
-	model_layers: list[model_schemas.ModelConfig] = [model_schemas.LogisticRegressionConfig()]
 	gene_counter: Counter = MISSING
 	tokenizer: Callable[[str], list[str]] = MISSING
+
+
+@dataclass
+class SingleModelPipelineConfig(PipelineConfig):
+	_target_: str = MISSING
+	model_layer: model_schemas.ModelConfig = model_schemas.LogisticRegressionConfig()
+
+
+@dataclass
+class VotingEnsemblePipelineConfig(PipelineConfig):
+	_target_: str = MISSING
+	model_layers: list[model_schemas.ModelConfig] = MISSING #field(default_factory=lambda: [])
 
 
 def setup_config():
