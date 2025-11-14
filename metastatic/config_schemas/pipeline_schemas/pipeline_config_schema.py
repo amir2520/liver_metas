@@ -2,18 +2,22 @@ from dataclasses import dataclass, field
 from omegaconf import MISSING
 from collections import Counter
 from typing import Callable, Optional
-from metastatic.config_schemas import dimension_reduction_schemas
-from metastatic.config_schemas import gene_mutation_transformer_schema
-from metastatic.config_schemas import model_schemas
-from metastatic.config_schemas import vectorizer_schemas
+from metastatic.config_schemas.pipeline_schemas import dimension_reduction_schemas
+from metastatic.config_schemas.pipeline_schemas import gene_mutation_transformer_schema
+from metastatic.config_schemas.pipeline_schemas import model_schemas
+from metastatic.config_schemas.pipeline_schemas import vectorizer_schemas
+from metastatic.config_schemas.pipeline_schemas import scaler_schemas
+from metastatic.config_schemas.pipeline_schemas import resampler_schema
 from hydra.core.config_store import ConfigStore
 
 
 @dataclass
 class PipelineConfig:
-	dim_reduction_layer: Optional[dimension_reduction_schemas.DimensionalityReductionConfig] = dimension_reduction_schemas.NMFConfig()
-	partial_vectorizer_layer: Optional[vectorizer_schemas.VectorizerConfig] = vectorizer_schemas.PartialTfidfVectorizerConfig()
 	partial_gene_mutation_preprocess_layer: gene_mutation_transformer_schema.PartialGeneMutProcessConfig = gene_mutation_transformer_schema.PartialGeneMutProcessConfig()
+	partial_vectorizer_layer: Optional[vectorizer_schemas.VectorizerConfig] = vectorizer_schemas.PartialTfidfVectorizerConfig()
+	dim_reduction_layer: Optional[dimension_reduction_schemas.DimensionalityReductionConfig] = dimension_reduction_schemas.NMFConfig()
+	resampler_layer: Optional[resampler_schema.SMOTEConfig] = resampler_schema.SMOTEConfig() 
+	scaler_layer: Optional[scaler_schemas.ScalerConfig] = scaler_schemas.StandardScalerConfig()
 	gene_counter: Counter = MISSING
 	tokenizer: Callable[[str], list[str]] = MISSING
 
@@ -31,9 +35,12 @@ class VotingEnsemblePipelineConfig(PipelineConfig):
 
 
 def setup_config():
+	resampler_schema.setup_config()
 	dimension_reduction_schemas.setup_config()
 	gene_mutation_transformer_schema.setup_config()
 	model_schemas.setup_config()
+	scaler_schemas.setup_config()
+	vectorizer_schemas.setup_config()
 
 	cs = ConfigStore.instance()
 	cs.store(name = 'config_schema', node = PipelineConfig)

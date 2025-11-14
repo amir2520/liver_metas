@@ -10,6 +10,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 
+from imblearn.base import BaseSampler
+
 
 
 class PartialGeneMutProcessType(Protocol):
@@ -27,9 +29,10 @@ class BaseSklearnPipeline(ABC):
 		gene_counter: Counter,
 		tokenizer: Callable[[str], list[str]],
 		partial_gene_mutation_preprocess_layer: PartialGeneMutProcessType,
-		#model_layers: list[ClassifierMixin],
-		dim_reduction_layer: Optional[BaseEstimator] = None,
 		partial_vectorizer_layer: Optional[PartialTfidfVectorizerType] = None,
+		dim_reduction_layer: Optional[BaseEstimator] = None,
+		resampler_layer: Optional[BaseSampler] = None,
+		scaler_layer: Optional[BaseEstimator] = None
 	) -> None:
 
 		gene_mutation_layer = partial_gene_mutation_preprocess_layer(gene_counter=gene_counter)
@@ -37,7 +40,8 @@ class BaseSklearnPipeline(ABC):
 		self.gene_mutation_layer = gene_mutation_layer
 		self.tfidf_vectorizer = partial_vectorizer_layer(tokenizer=tokenizer) if partial_vectorizer_layer else None
 		self.dim_reduction_layer = dim_reduction_layer
-		#self.model_layers = model_layers
+		self.resampler_layer = resampler_layer
+		self.scaler_layer = scaler_layer
 
 	@abstractmethod
 	def build_pipeline(self) -> Pipeline:
