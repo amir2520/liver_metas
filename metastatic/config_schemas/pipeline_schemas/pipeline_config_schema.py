@@ -1,7 +1,8 @@
 from dataclasses import dataclass, field
 from omegaconf import MISSING
 from collections import Counter
-from typing import Callable, Optional
+from typing import Optional, Any
+from collections.abc import Callable
 from metastatic.config_schemas.pipeline_schemas import dimension_reduction_schemas
 from metastatic.config_schemas.pipeline_schemas import gene_mutation_transformer_schema
 from metastatic.config_schemas.pipeline_schemas import model_schemas
@@ -19,12 +20,13 @@ class PipelineConfig:
 	resampler_layer: Optional[resampler_schema.SMOTEConfig] = resampler_schema.SMOTEConfig() 
 	scaler_layer: Optional[scaler_schemas.ScalerConfig] = scaler_schemas.StandardScalerConfig()
 	gene_counter: Counter = MISSING
-	tokenizer: Callable[[str], list[str]] = MISSING
+	# tokenizer: Callable[[str], list[str]] = MISSING
+	tokenizer: Any = MISSING
 
 
 @dataclass
 class SingleModelPipelineConfig(PipelineConfig):
-	_target_: str = MISSING
+	_target_: str = 'metastatic.pipelines.single_model_pipeline.SingleModelPipeline'
 	model_layer: model_schemas.ModelConfig = model_schemas.LogisticRegressionConfig()
 
 
@@ -43,4 +45,4 @@ def setup_config():
 	vectorizer_schemas.setup_config()
 
 	cs = ConfigStore.instance()
-	cs.store(name = 'config_schema', node = PipelineConfig)
+	cs.store(name = 'single_model_pipeline_schema', node = SingleModelPipelineConfig, group='pipeline')

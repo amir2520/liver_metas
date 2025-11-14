@@ -1,7 +1,7 @@
 import hydra
 from hydra.utils import instantiate
 from omegaconf import DictConfig, OmegaConf
-from metastatic.config_schemas.config_schema import setup_config
+from metastatic.config_schemas.pipeline_schemas.pipeline_config_schema import setup_config
 
 
 # import pandas as pd

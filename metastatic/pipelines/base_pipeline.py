@@ -1,4 +1,5 @@
-from typing import Protocol, Union, Optional, Callable
+from typing import Protocol, Union, Optional, Any
+from collections.abc import Callable
 from collections import Counter
 from abc import ABC, abstractmethod
 
@@ -19,7 +20,7 @@ class PartialGeneMutProcessType(Protocol):
 		...
 
 class PartialTfidfVectorizerType(Protocol):
-	def __call__(self, tokenizer: Callable[[str], list[str]]) -> TfidfVectorizer:
+	def __call__(self, tokenizer: Any) -> TfidfVectorizer:
 		...
 
 
@@ -27,7 +28,7 @@ class BaseSklearnPipeline(ABC):
 	def __init__(
 		self,
 		gene_counter: Counter,
-		tokenizer: Callable[[str], list[str]],
+		tokenizer: Any,
 		partial_gene_mutation_preprocess_layer: PartialGeneMutProcessType,
 		partial_vectorizer_layer: Optional[PartialTfidfVectorizerType] = None,
 		dim_reduction_layer: Optional[BaseEstimator] = None,
