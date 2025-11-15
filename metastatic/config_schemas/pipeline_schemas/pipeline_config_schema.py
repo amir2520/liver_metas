@@ -17,7 +17,7 @@ class PipelineConfig:
 	partial_gene_mutation_preprocess_layer: gene_mutation_transformer_schema.PartialGeneMutProcessConfig = gene_mutation_transformer_schema.PartialGeneMutProcessConfig()
 	partial_vectorizer_layer: Optional[vectorizer_schemas.VectorizerConfig] = vectorizer_schemas.PartialTfidfVectorizerConfig()
 	dim_reduction_layer: Optional[dimension_reduction_schemas.DimensionalityReductionConfig] = dimension_reduction_schemas.NMFConfig()
-	resampler_layer: Optional[resampler_schema.SMOTEConfig] = resampler_schema.SMOTEConfig() 
+	resampler_layer: Optional[resampler_schema.SMOTEConfig] = None # resampler_schema.SMOTEConfig() 
 	scaler_layer: Optional[scaler_schemas.ScalerConfig] = scaler_schemas.StandardScalerConfig()
 	gene_counter: Counter = MISSING
 	# tokenizer: Callable[[str], list[str]] = MISSING
@@ -45,4 +45,4 @@ def setup_config():
 	vectorizer_schemas.setup_config()
 
 	cs = ConfigStore.instance()
-	cs.store(name = 'single_model_pipeline_schema', node = SingleModelPipelineConfig, group='pipeline')
+	cs.store(name = 'single_model_pipeline_schema', node = SingleModelPipelineConfig, group='single_model/pipeline')

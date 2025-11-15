@@ -13,7 +13,7 @@ class SparseToArray(BaseEstimator, TransformerMixin):
     def __init__(self) -> None:
         pass
     
-    def fit(self, X: Union[np.ndarry, sp.spmatrix], y: Optional[Union[np.ndarray, pd.Series]] = None) -> "SparseToArray":
+    def fit(self, X: Union[np.ndarray, sp.spmatrix], y: Optional[Union[np.ndarray, pd.Series]] = None) -> "SparseToArray":
         return self
     
     def transform(self, X: Union[np.ndarray, sp.spmatrix]) -> np.ndarray:

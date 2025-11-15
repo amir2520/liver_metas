@@ -10,6 +10,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
+from metastatic.preprocess.gene_mutation_transformer import GeneMutProcess
 
 from imblearn.base import BaseSampler
 

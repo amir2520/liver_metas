@@ -1,6 +1,7 @@
 from dataclasses import dataclass, field
 from hydra.core.config_store import ConfigStore
 from omegaconf import MISSING
+from typing import Optional, Union, Any
 
 
 @dataclass
@@ -12,7 +13,8 @@ class ModelConfig:
 class LogisticRegressionConfig(ModelConfig):
 	_target_: str = 'sklearn.linear_model.LogisticRegression'
 	C: float = 10.0
-	class_weight: dict = field(default_factory=lambda: {0:1, 1:1})
+	# class_weight: dict = field(default_factory=lambda: {0:1.0, 1:1.0})
+	class_weight: Any = field(default=None)
 
 
 @dataclass

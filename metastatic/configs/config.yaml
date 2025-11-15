@@ -1,2 +1,2 @@
 defaults:
-  - pipeline: single_model_pipeline_schema
+  - single_model: single_model_config_schema
