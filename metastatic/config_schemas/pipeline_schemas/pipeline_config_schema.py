@@ -45,4 +45,4 @@ def setup_config():
 	vectorizer_schemas.setup_config()
 
 	cs = ConfigStore.instance()
-	cs.store(name = 'single_model_pipeline_schema', node = SingleModelPipelineConfig, group='single_model/pipeline')
+	cs.store(name = 'single_model_pipeline_schema', node = SingleModelPipelineConfig, group='pipeline')
