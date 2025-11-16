@@ -45,6 +45,11 @@ class BaseSklearnPipeline(ABC):
 		self.resampler_layer = resampler_layer
 		self.scaler_layer = scaler_layer
 
+
+	@abstractmethod
+	def cross_validation(self, X: pd.DataFrame, y: pd.Series, cv: int = 5, scoring=None, n_jobs=-1) -> list[float]:
+		...
+
 	@abstractmethod
 	def build_pipeline(self) -> Pipeline:
 		...

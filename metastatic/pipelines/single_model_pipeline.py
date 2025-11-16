@@ -1,6 +1,7 @@
 from metastatic.pipelines.base_pipeline import BaseSklearnPipeline
 from sklearn.pipeline import Pipeline
 from sklearn.base import ClassifierMixin
+from sklearn.model_selection import cross_val_score
 import pandas as pd
 import numpy as np
 from metastatic.utils.utils import SparseToArray
@@ -33,6 +34,11 @@ class SingleModelPipeline(BaseSklearnPipeline):
 
 		model_pipeline = Pipeline(layers)
 		return model_pipeline
+
+	def cross_validation(self, X: pd.DataFrame, y: pd.Series, cv: int = 5, scoring=None, n_jobs=-1, **kwargs) -> np.ndarray:
+		pipeline = self.build_pipeline()
+		scores = cross_val_score(pipeline, X, y, scoring=scoring, n_jobs=n_jobs, cv=cv, **kwargs)
+		return scores
 
 	def fit(self, X:pd.DataFrame, y: pd.Series) -> "SingleModelPipeline":
 		self.pipeline.fit(X, y)
