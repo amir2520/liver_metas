@@ -1,12 +1,13 @@
 from dataclasses import dataclass
 from omegaconf import MISSING
 from hydra.core.config_store import ConfigStore
-
+from metastatic.utils.utils import LoggableParamsMixin
 
 @dataclass
-class ScalerConfig:
+class ScalerConfig(LoggableParamsMixin):
 	_target_: str = MISSING
-
+	def loggable_params(self) -> list[str]:
+		return ['_target_']
 
 @dataclass
 class StandardScalerConfig(ScalerConfig):

@@ -5,6 +5,7 @@ from sklearn.model_selection import cross_val_score
 import pandas as pd
 import numpy as np
 from metastatic.utils.utils import SparseToArray
+from imblearn import pipeline
 
 
 class SingleModelPipeline(BaseSklearnPipeline):
@@ -32,13 +33,13 @@ class SingleModelPipeline(BaseSklearnPipeline):
 
 		layers.append((f'{self.model_layer.__class__.__name__}', self.model_layer))
 
-		model_pipeline = Pipeline(layers)
+		model_pipeline = pipeline.Pipeline(layers)
 		return model_pipeline
 
-	def cross_validation(self, X: pd.DataFrame, y: pd.Series, cv: int = 5, scoring=None, n_jobs=-1, **kwargs) -> np.ndarray:
+	def cross_validation(self, X: pd.DataFrame, y: pd.Series, cv: int = 5, scoring=None, n_jobs=-1, **kwargs) -> dict:
 		pipeline = self.build_pipeline()
 		scores = cross_val_score(pipeline, X, y, scoring=scoring, n_jobs=n_jobs, cv=cv, **kwargs)
-		return scores
+		return {'scores': scores, 'mean': scores.mean(), 'std': scores.std()}
 
 	def fit(self, X:pd.DataFrame, y: pd.Series) -> "SingleModelPipeline":
 		self.pipeline.fit(X, y)

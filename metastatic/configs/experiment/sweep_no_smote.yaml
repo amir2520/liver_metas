@@ -1,10 +1,12 @@
-pipeline:
-  resampler_layer:
-    _target_: imblearn.over_sampling.SMOTE
-  model_layer:
-    class_weight: null
+# @package _global_
+
+single_model:
+  pipeline:
+    resampler_layer: null
+    model_layer:
+      class_weight: null
 
 hydra:
   sweeper:
     params:
-      pipeline.model_layer.C: 0.1,1.0,10.0
+      single_model.pipeline.model_layer.C: 0.1,1.0,10.0

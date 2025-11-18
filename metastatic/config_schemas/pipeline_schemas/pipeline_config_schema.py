@@ -14,14 +14,11 @@ from hydra.core.config_store import ConfigStore
 
 @dataclass
 class PipelineConfig:
-	partial_gene_mutation_preprocess_layer: gene_mutation_transformer_schema.PartialGeneMutProcessConfig = gene_mutation_transformer_schema.PartialGeneMutProcessConfig()
-	partial_vectorizer_layer: Optional[vectorizer_schemas.VectorizerConfig] = vectorizer_schemas.PartialTfidfVectorizerConfig()
+	gene_mutation_preprocess_layer: gene_mutation_transformer_schema.GeneMutProcessConfig = gene_mutation_transformer_schema.GeneMutProcessConfig()
+	vectorizer_layer: Optional[vectorizer_schemas.VectorizerConfig] = vectorizer_schemas.TfidfVectorizerConfig()
 	dim_reduction_layer: Optional[dimension_reduction_schemas.DimensionalityReductionConfig] = dimension_reduction_schemas.NMFConfig()
 	resampler_layer: Optional[resampler_schema.SMOTEConfig] = None # resampler_schema.SMOTEConfig() 
 	scaler_layer: Optional[scaler_schemas.ScalerConfig] = scaler_schemas.StandardScalerConfig()
-	gene_counter: Counter = MISSING
-	# tokenizer: Callable[[str], list[str]] = MISSING
-	tokenizer: Any = MISSING
 
 
 @dataclass

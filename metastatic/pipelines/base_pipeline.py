@@ -1,46 +1,36 @@
-from typing import Protocol, Union, Optional, Any
+from typing import Union, Optional, Any
 from collections.abc import Callable
-from collections import Counter
+# from collections import Counter
 from abc import ABC, abstractmethod
 
 import pandas as pd
 import numpy as np
-
+import pickle
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
 from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from metastatic.preprocess.gene_mutation_transformer import GeneMutProcess
 
+from metastatic.utils.io_utils import open_file
+
 from imblearn.base import BaseSampler
 
-
-
-class PartialGeneMutProcessType(Protocol):
-	def __call__(self, gene_counter: Counter) -> GeneMutProcess:
-		...
-
-class PartialTfidfVectorizerType(Protocol):
-	def __call__(self, tokenizer: Any) -> TfidfVectorizer:
-		...
 
 
 class BaseSklearnPipeline(ABC):
 	def __init__(
 		self,
-		gene_counter: Counter,
-		tokenizer: Any,
-		partial_gene_mutation_preprocess_layer: PartialGeneMutProcessType,
-		partial_vectorizer_layer: Optional[PartialTfidfVectorizerType] = None,
+		gene_mutation_preprocess_layer: GeneMutProcess,
+		vectorizer_layer: Optional[TfidfVectorizer] = None,
 		dim_reduction_layer: Optional[BaseEstimator] = None,
 		resampler_layer: Optional[BaseSampler] = None,
 		scaler_layer: Optional[BaseEstimator] = None
 	) -> None:
 
-		gene_mutation_layer = partial_gene_mutation_preprocess_layer(gene_counter=gene_counter)
 
-		self.gene_mutation_layer = gene_mutation_layer
-		self.tfidf_vectorizer = partial_vectorizer_layer(tokenizer=tokenizer) if partial_vectorizer_layer else None
+		self.gene_mutation_layer = gene_mutation_preprocess_layer
+		self.tfidf_vectorizer = vectorizer_layer
 		self.dim_reduction_layer = dim_reduction_layer
 		self.resampler_layer = resampler_layer
 		self.scaler_layer = scaler_layer
