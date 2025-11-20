@@ -42,3 +42,28 @@ services:
     init: true
     profiles:
       - ci
+
+  app-prod:
+    user: "${USER_ID:-1000}"
+    hostname: "${HOST_NAME:-amirhossein}"
+    image: metas-model-prod
+    container_name: metas-model-prod-container
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+      args:
+        USER_NAME: "${USER_NAME:-amirhossein}" 
+        USER_ID: "${USER_ID:-1000}"
+    env_file:
+      - .envs/.mlflow_prod
+      - .envs/.postgres
+    volumes:
+      - ./:/app/
+      - ~/.config/gcloud/:/home/${USER_NAME:-amirhossein}/.config/gcloud
+    ports:
+      - 8888:8888
+      - ${PROD_MLFLOW_SERVER_PORT}:${PROD_MLFLOW_SERVER_PORT}
+    ipc: host
+    init: true
+    profiles:
+      - prod

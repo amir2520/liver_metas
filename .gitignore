@@ -116,6 +116,7 @@ venv.bak/
 .envs/.triton
 .envs/.secrets
 .envs/.gcp
+.envs/.mlflow_prod
 
 # Spyder project settings
 .spyderproject

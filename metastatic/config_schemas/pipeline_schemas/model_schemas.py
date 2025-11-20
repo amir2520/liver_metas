@@ -11,20 +11,26 @@ class ModelConfig(LoggableParamsMixin):
 	def loggable_params(self) -> list[str]:
 		return ['_target_']
 
+
 @dataclass
 class LogisticRegressionConfig(ModelConfig):
-	_target_: str = 'sklearn.linear_model.LogisticRegression'
-	C: float = 10.0
-	# class_weight: dict = field(default_factory=lambda: {0:1.0, 1:1.0})
-	class_weight: Any = field(default=None)
-	def loggable_params(self) -> list[str]:
-		return super().loggable_params() + ['C', 'class_weight']
+    _target_: str = 'sklearn.linear_model.LogisticRegression'
+    C: float = 10.0
+    class_weight: Any = field(default=None)
+    # solver: str = 'lbfgs'
+    # penalty: str = 'l2'
+    # max_iter: int = 1000
+
+    def loggable_params(self) -> list[str]:
+        return super().loggable_params() + ['C', 'class_weight']
+
 
 @dataclass
 class RandomForestClassifierConfig(ModelConfig):
 	_target_: str = 'sklearn.ensemble.RandomForestClassifier'
 	max_depth: int = 5
-	class_weight: dict = field(default_factory=lambda: {0: 1, 1: 1})
+	class_weight: Any = field(default=None)
+	# class_weight: dict = field(default_factory=lambda: {0: 1, 1: 1})
 	def loggable_params(self) -> list[str]:
 		return super().loggable_params() + ['max_depth', 'class_weight']
 
@@ -33,7 +39,8 @@ class RandomForestClassifierConfig(ModelConfig):
 class LinearSVCConfig(ModelConfig):
 	_target_: str = 'sklearn.svm.LinearSVC'
 	max_iter: int = 1000
-	class_weight: dict = field(default_factory=lambda: {0: 1, 1: 1})
+	class_weight: Any = field(default=None)
+	# class_weight: dict = field(default_factory=lambda: {0: 1, 1: 1})
 	def loggable_params(self) -> list[str]:
 		return super().loggable_params() + ['max_iter', 'class_weight']
 
