@@ -36,24 +36,24 @@ def main(config: DictConfig):
 		log_training_hparams_single_model(config=config)
 		mlflow.log_metric('crossval_f1_mean', scores['mean'])
 
-		
+
 
 	model_selector = instantiate(config.single_model.model_selector)
 	assert config.single_model.registered_model_name is not None
 	if model_selector is not None:
 		print("DEBUG run.py - best_run_data:", model_selector.best_run_data)
 		if model_selector.is_selected():
+			# Fit the model only when it's the best
+			model_pipeline.fit(X_train, y_train)
 			log_model(
-				config.single_model.infrastructure.mlflow, model_selector.get_new_best_run_tag(), config.single_model.registered_model_name
+				config.single_model.infrastructure.mlflow, 
+				model_selector.get_new_best_run_tag(), 
+				config.single_model.registered_model_name,
+				model_pipeline  
 			)
 
-# client = mlflow.tracking.MlflowClient(MLFLOW_TRACKING_URI)
-# # print(client)
 
-# id_list = [exp.experiment_id for exp in mlflow.search_experiments()]
-# runs = mlflow.search_runs(experiment_names=['MetasExperiments'])
-# adaptable_goose = client.get_run(run_id='a1cef5d8f41b48e09a9ebca683956c52')
-# print(adaptable_goose.data.metrics.get('crossval_f1_mean'))
+
 
 
 if __name__ == "__main__":

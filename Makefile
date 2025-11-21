@@ -60,6 +60,9 @@ down:
 exec-in: up
 	docker exec -it $(CONTAINER_NAME) bash
 
+prod-exec-in: up-prod
+	docker exec -it $(PROD_CONTAINER_NAME) bash
+
 run-prod: up-prod
 	$(PROD_DOCKER_COMPOSE_EXEC) python metastatic/run.py -m +experiment=sweep_no_smote
 
