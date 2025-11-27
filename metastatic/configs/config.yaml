@@ -1,2 +1,8 @@
 defaults:
   - single_model: single_model_config_schema
+
+
+single_model:
+  infrastructure:
+    data:
+      version: v3

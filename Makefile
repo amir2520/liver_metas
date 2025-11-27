@@ -3,6 +3,8 @@
 
 include .envs/.mlflow_dev
 include .envs/.postgres
+include .envs/.dataset_gcp_project
+
 
 export
 
@@ -64,11 +66,11 @@ prod-exec-in: up-prod
 	docker exec -it $(PROD_CONTAINER_NAME) bash
 
 run-prod: up-prod
-	$(PROD_DOCKER_COMPOSE_EXEC) python metastatic/run.py -m +experiment=sweep_no_smote
+	$(PROD_DOCKER_COMPOSE_EXEC) python metastatic/run_training.py -m +experiment=sweep_no_smote
 
 run-local: up
-	$(DOCKER_COMPOSE_EXEC) python metastatic/run.py -m +experiment=sweep_no_smote
-	$(DOCKER_COMPOSE_EXEC) python metastatic/run.py -m +experiment=sweep_with_smote_lr
+	$(DOCKER_COMPOSE_EXEC) python metastatic/run_training.py -m +experiment=sweep_no_smote
+	$(DOCKER_COMPOSE_EXEC) python metastatic/run_training.py -m +experiment=sweep_with_smote_lr
 
 build:
 	$(DOCKER_COMPOSE_COMMAND) build $(SERVICE_NAME)

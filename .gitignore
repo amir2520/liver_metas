@@ -117,6 +117,7 @@ venv.bak/
 .envs/.secrets
 .envs/.gcp
 .envs/.mlflow_prod
+.envs/.dataset_gcp_project
 
 # Spyder project settings
 .spyderproject
@@ -139,3 +140,5 @@ dmypy.json
 *.ipynb
 outputs/
 multirun/
+
+data/

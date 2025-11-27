@@ -31,6 +31,7 @@ services:
     env_file:
       - .envs/.mlflow_dev
       - .envs/.postgres
+      - .envs/.dataset_gcp_project
     volumes:
       - ./:/app/
       - mlflow-artifact-store:/mlflow-artifact-store
@@ -57,6 +58,7 @@ services:
     env_file:
       - .envs/.mlflow_prod
       - .envs/.postgres
+      - .envs/.dataset_gcp_project
     volumes:
       - ./:/app/
       - ~/.config/gcloud/:/home/${USER_NAME:-amirhossein}/.config/gcloud
