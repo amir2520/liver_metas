@@ -31,8 +31,7 @@ dask-ml = "~=2023.3"
 pygit2 = "~=1.10.1"
 bokeh = "~=3.1"
 pyOpenSSL = "22.0.0"
-cryptography = "38.0.4"
-
+cryptography = "38.0.4"  
 
 
 [build-system]

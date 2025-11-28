@@ -26,10 +26,6 @@ class DataConfig:
 	y_train_path: str = 'y_train_liver_all.csv'
 	y_test_path: str = 'y_test_liver_all.csv'
 	counter_path: str = 'metastatic/counter_dir/gene_mut_counter.pkl'
-	# X_train_path: str = 'metastatic/datasets/X_train_liver_all.csv'
-	# X_test_path: str = 'metastatic/datasets/X_test_liver_all.csv'
-	# y_train_path: str = 'metastatic/datasets/y_train_liver_all.csv'
-	# y_test_path: str = 'metastatic/datasets/y_test_liver_all.csv'
 
 
 @dataclass
